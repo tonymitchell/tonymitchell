@@ -30,6 +30,7 @@ tags: [tutorial, avr, avrdude, avr-gcc]
 > 
 > 
 > You can see a summary of how the versions differ in the table below:
+>
 > |Version|avr toolchain|make|avrdude|usb access|
 > |-|:-:|:-:|:-:|:-:|
 > |Windows+GnuWin32|windows|gnuwin32|windows|-|
