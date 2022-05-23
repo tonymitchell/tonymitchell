@@ -30,6 +30,7 @@ tags: [tutorial, avr, avrdude, avr-gcc]
 > 
 > 
 > You can see a summary of how the versions differ in the table below:
+>
 > |Version|avr toolchain|make|avrdude|usb access|
 > |-|:-:|:-:|:-:|:-:|
 > |Windows+GnuWin32|windows|gnuwin32|windows|-|
@@ -40,3 +41,34 @@ tags: [tutorial, avr, avrdude, avr-gcc]
 > 
 
 ## Overview
+
+
+
+
+
+
+
+## In Linux
+
+Steps:
+1. Install AVR toolchain (to build the code)
+2. Install GnuWin32 (for supporting build tools like Make)
+3. Install AVR Dude (to flash the chip)
+4. Install VSCode (as an IDE) [Optional]
+
+
+```bash
+apt install avrdude
+apt install gcc-avr?
+
+#make is usually already installed, but if not...
+#apt install make
+
+# Another option...
+#apt install arduino
+
+#in WSL then install usbip to access USB devices in the host
+#sudo apt install linux-tools-virtual hwdata
+#sudo update-alternatives --install /usr/local/bin/usbip usbip /usr/lib/linux-tools/*/usbip 20
+```
+
