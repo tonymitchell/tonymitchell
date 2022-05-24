@@ -46,10 +46,14 @@ This guide will help you get your environment set up to build projects on the At
 
 Summary:
 1. Prep
-1. Install AVR toolchain (to build the code)
-1. Install AVR Dude (to flash the chip)
-1. Install GnuWin32 (for supporting build tools like Make)
+1. [Install AVR toolchain](#install-avr-toolchain) (to build the code)
+1. [Install AVR Dude](#install-avr-dude) (to flash the chip)
+1. [Install GnuWin32](#install-gnuwin32) (for supporting build tools like Make)
 1. Install VSCode (as an IDE) [Optional]
+
+
+
+
 
 
 ## Prep
@@ -80,7 +84,7 @@ The first step is to download the AVR toolchain from the Microchip website. The 
 Unzip the downloaded toolchain archive (e.g. avr8-gnu-toolchain-3.6.1.1752-win32.any.x86.zip) into the tools folder you created earlier. You should now have a directory named avr8-gnu-toolchain-win32_x86 in your tools folder. My preference is to rename the directory to remove any platform specific names (e.g. win32_x86) to make any scripts I create platform agnostic and more portable (e.g. avr8-gnu-toolchain).
 
 
-Tools folder so far:
+Tools directory so far:
 ```
 C:\AVR
 └───avr8-gnu-toolchain
@@ -92,6 +96,7 @@ C:\AVR
 
 **[Optional]** If you choose to download the chi ppacks as well, I recommend unzipping those into a separate directory for chip packs with each chip pack in a separate subfolder.
 
+Tools directory so far:
 ```
 C:\AVR
 ├───avr-device-packs
@@ -103,6 +108,16 @@ C:\AVR
 └───avr8-gnu-toolchain
 ```
 
+### Test
+To test the installation of the avr-gcc toolchain, run `avr-gcc --version` in the `avr8-gnu-toolchain\bin` directory. The output should look something this:
+
+```
+C:\AVR\avr8-gnu-toolchain\bin>avr-gcc --version
+avr-gcc (AVR_8_bit_GNU_Toolchain_3.6.2_1778) 5.4.0
+Copyright (C) 2015 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+```
 
 ## Install AVR Dude
 
@@ -117,6 +132,7 @@ C:\AVR
 
 Unzip the downloaded archive (e.g. avrdude-v7.0-windows-x86.zip) into the tools folder into a directory named "avrdude". This will keep it version and platform agnostic.
 
+Tools directory so far:
 ```
 C:\AVR
 ├───avr8-gnu-toolchain
@@ -125,37 +141,77 @@ C:\AVR
     └───... 
 ```
 
+### Test
+
+To test the installation of avrdude, run `avrdude` in the `avrdude` directory. The output should look something this:
+
+```
+C:\DEV\AVR\avrdude>avrdude.exe
+Usage: avrdude.exe [options]
+Options:
+  -p <partno>                Required. Specify AVR device.
+  -b <baudrate>              Override RS-232 baud rate.
+  -B <bitclock>              Specify JTAG/STK500v2 bit clock period (us).
+  -C <config-file>           Specify location of configuration file.
+  -c <programmer>            Specify programmer type.
+  -D                         Disable auto erase for flash memory
+  -i <delay>                 ISP Clock Delay [in microseconds]
+  -P <port>                  Specify connection port.
+  -F                         Override invalid signature check.
+  -e                         Perform a chip erase.
+  -O                         Perform RC oscillator calibration (see AVR053).
+  -U <memtype>:r|w|v:<filename>[:format]
+                             Memory operation specification.
+                             Multiple -U options are allowed, each request
+                             is performed in the order specified.
+  -n                         Do not write anything to the device.
+  -V                         Do not verify.
+  -t                         Enter terminal mode.
+  -E <exitspec>[,<exitspec>] List programmer exit specifications.
+  -x <extended_param>        Pass <extended_param> to programmer.
+  -v                         Verbose output. -v -v for more.
+  -q                         Quell progress output. -q -q for less.
+  -l logfile                 Use logfile rather than stderr for diagnostics.
+  -?                         Display this usage.
+
+avrdude version 7.0, URL: <https://github.com/avrdudes/avrdude>
+```
+
+
 ## Install GnuWin32
 
-The [GnuWin32 project](http://gnuwin32.sourceforge.net/) provides ports GNU tools to Windows.  For our purposes, the main tool we'll need is `make`. You can download and install just make, but my preferences is to download and install the full tool suite, and that's what we'll do in this guide.
+The [GnuWin32 project](http://gnuwin32.sourceforge.net/) provides ports of GNU tools to Windows.  For our purposes, the main tool we'll need from GnuWin32 is `make`. You can download and install just `make`, but my preferences is to download and install the full tool suite because there are lots of additional useful tools in there, and that's what we'll do in this guide.
 
 ### Download
 
-1. Browse to https://sourceforge.net/projects/getgnuwin32/files/getgnuwin32/0.6.30/ and download GetGnuWin32-0.6.3.exe.  Direct link here: https://sourceforge.net/projects/getgnuwin32/files/getgnuwin32/0.6.30/GetGnuWin32-0.6.3.exe/download
-    - If for some reason that link doesn't work, you can start back on the project site by browsing to http://getgnuwin32.sourceforge.net/ and navigate to the downloads folder from there.
+1. Browse to [https://sourceforge.net/projects/getgnuwin32/files/getgnuwin32/0.6.30/](https://sourceforge.net/projects/getgnuwin32/files/getgnuwin32/0.6.30/) and download [GetGnuWin32-0.6.3.exe](https://sourceforge.net/projects/getgnuwin32/files/getgnuwin32/0.6.30/GetGnuWin32-0.6.3.exe/download).
+    - If for some reason that link doesn't work, you can start back on the [project site](http://getgnuwin32.sourceforge.net/) and navigate to the downloads folder from there.
 2. Save that file to a temporary location such as C:\temp or your Downloads folder.
 
 ### Install
 
 1. Run the executable you downloaded (e.g GetGnuWin32-0.6.3.exe). 
-1. When presented, accept the licence. 
+1. When presented, **Accept** the licence. 
 1. You will be presented with a summary of installation instructions which should align to the steps below.
-1. Click the Install button. This will create a new folder in the same location the executable was located (e.g. C:\temp)
+1. Click the **Install** button. This will create a new folder in the same location the executable was located (e.g. C:\temp)
 1. Open a Command Prompt as Administrator to ensure the next steps have permission necessary to install.
 1. Change directory to the new folder created when you ran the installer. (e.g. C:\temp\GetGnuWin32)
-    ```cmd
-    > cd \temp\GetGnuWin32
+    ```
+    C:\> cd \temp\GetGnuWin32
     ```
 1. Run download.bat.  This will download all the packages necessary for gnuwin32. You will be prompted to press a key a few times before downloads start. The downloads can take a while even with a fast internet connection.
-    ```cmd
-    > download.bat
+    ```
+    C:\temp\GetGnuWin32> download.bat
     ```
 1. If there any failed downloads, run the download.bat again until they are all successfull.
 1. Once all the packages have been downloaded successfully, run the install.bat and pass it the target directory where gnuwin32 should be installed.  If your tools directory is C:\AVR, then you would pass C:\AVR\gnuwin32 as in the example below.
-    ```cmd
-    > install.bat C:\AVR\gnuwin32
+    ```
+    C:\temp\GetGnuWin32> install.bat C:\AVR\gnuwin32
     ```
 
+1. You will be prompted about installing updated versions of several components. When prompted, just hit Enter to accept the default responses to install these updated components.  
+
+Tools directory so far:
 ```
 C:\AVR
 ├───avr8-gnu-toolchain
@@ -165,6 +221,21 @@ C:\AVR
     ├───contrib
     ├───doc
     └───... 
+```
+
+### Test
+
+To test the installation of gnuwin32, run `make -v` in the `gnuwin32\bin` directory. The output should look something this:
+
+```
+C:\DEV\gnuwin32\bin\>make -v
+GNU Make 3.81
+Copyright (C) 2006  Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.
+There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.
+
+This program built for i386-pc-mingw32
 ```
 
 ## Configuring
@@ -182,25 +253,8 @@ Here is a summary of what you've done so far:
 
 The first few levels of the target structure should look like (note: the avr8-dvp is optional and in this example has several chip packs installed):
 ```
-
-
-
-
 C:\AVR
 ├───avr8-dvp
-│   ├───atdf
-│   ├───avrasm
-│   ├───gcc
-│   ├───include
-│   ├───samd21a
-│   ├───samd21b
-│   ├───samd21c
-│   ├───samd21d
-│   ├───samd51a
-│   ├───scripts
-│   ├───simulator
-│   ├───templates
-│   └───xc8
 ├───avr8-gnu-toolchain
 │   ├───avr
 │   ├───bin
@@ -240,7 +294,7 @@ Recommended to create batch file to set environment variables for development wo
 
 Example batch file
 
-```cmd
+```batchfile
 SET TOOLS_DIR=C:\AVR
 
 SET PATH=%PATH%;%TOOLS_DIR%\avr8-gnu-toolchain\bin
@@ -253,11 +307,31 @@ start cmd
 
 ## Testing the AVR toolchain
 
+Run the batch file you created above to prepare a console session with tools on the PATH.  Create a new file named blink.c and paste the following program into it.  This is a pure AVR implementation of the classic Blink sketch for Arduinos.  If you load this to an Arduino it will make the built-in LED (pin 13/LED_BUILTIN) flash on and off every 500ms.
 
+```c
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main()
+{
+    // Set built-in LED pin as output
+    DDRB |= (1 << DDB5);
+    while (1) {
+        PORTB |=  (1 << PB5);   // LED on
+        _delay_ms(500);
+        PORTB &= ~(1 << PB5);   // LED off
+        _delay_ms(500);
+    }
+    return 0;
+}
 ```
-avr-gcc main.c -o main.elf
-avr-objcopy main.elf -O ihex main.hex
-avrdude -c usbasp -p t85 -U flash:w:"main.hex":a
+
+In the directory you created the file, run the following commands.
+```
+avr-gcc blink.c -o blink.elf
+avr-objcopy blink.elf -O ihex blink.hex
+avrdude -c arduino -p m328 -U flash:w:"blink.hex":a
 ```
 
 
