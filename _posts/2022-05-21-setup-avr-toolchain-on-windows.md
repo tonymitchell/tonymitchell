@@ -20,13 +20,9 @@ tags: [tutorial, avr, avrdude, avr-gcc]
 >    - WSL + usbip
 >    - WSL + Windows
 >
->    See [How to setup the AVR toolchain on WSL]({% post_url 2022-05-21-setup-avr-toolchain-on-wsl %})
->
 > 3. [Linux-based]({% post_url 2022-05-21-setup-avr-toolchain-on-linux %})
 >
 >    This option uses all native linux-based tools on a native Linux installation.
-> 
->    See [How to setup the AVR toolchain on Linux]({% post_url 2022-05-21-setup-avr-toolchain-on-linux %})
 > 
 > 
 > You can see a summary of how the versions differ in the table below:
@@ -45,16 +41,17 @@ tags: [tutorial, avr, avrdude, avr-gcc]
 This guide will help you get your environment set up to build projects on the Atmel AVR chips (e.g. ATmega328, ATtiny85, etc.) projects on Windows using Windows-based tools.
 
 Summary:
-1. Prep
+1. [Prep](#prep)
 1. [Install AVR toolchain](#install-avr-toolchain) (to build the code)
 1. [Install AVR Dude](#install-avr-dude) (to flash the chip)
 1. [Install GnuWin32](#install-gnuwin32) (for supporting build tools like Make)
-1. Install VSCode (as an IDE) [Optional]
+1. [Configure PATH](#configure-path) (to make tools available)
+1. [Testing the AVR toolchain](#testing-the-avr-toolchain)
+1. [FAQ](#faq)
 
-
-
-
-
+<!-- 
+1. [Install VS Code](#install-vs-code) (as an IDE) [Optional]
+-->
 
 ## Prep
 
@@ -238,7 +235,9 @@ PARTICULAR PURPOSE.
 This program built for i386-pc-mingw32
 ```
 
-## Configuring
+## Configure PATH
+
+At this point all the tools are installed, but we still need to make them available on the PATH. Since some of the GnuWin32 tools can conflict with built-in Windows tools of the same name, we'll only add these tools to the PATH when we need them via a batch file.  
 
 Here is a summary of what you've done so far:
 
@@ -246,68 +245,35 @@ Here is a summary of what you've done so far:
 |-|-|-|
 |avr8-gnu-toolchain-3.6.2.1778-win32.any.x86.zip|C:\AVR\avr8-gnu-toolchain|Unzip to target|
 |avrdude-v7.0-windows-x86.zip                   |C:\AVR\avrdude|Unzip to target|
-|GetGnuWin32-0.6.3.exe                          |C:\AVR\gnuwin32|Run installer, and complete steps in Readme.txt to produce gnuwin32 folder. At a high-level, those steps are: Run download.bat, the run install.bat, then copy folder, then run update-links.bat in the target.|
+|GetGnuWin32-0.6.3.exe                          |C:\AVR\gnuwin32|Installer, download.bat, install.bat C:\AVR\gnuwin32|
 |Chip packs (*.atpack)                          |C:\AVR\avr8-dvp|Unzip to target|
 
+We'll create two separate batch files -- one for setting the paths, and another for opening a command prompt with the paths set. This way if you want to just add the paths to an existing console session you can run the first, but if you want a brand new session you can run the second.
 
-
-The first few levels of the target structure should look like (note: the avr8-dvp is optional and in this example has several chip packs installed):
-```
-C:\AVR
-├───avr8-dvp
-├───avr8-gnu-toolchain
-│   ├───avr
-│   ├───bin
-│   ├───doc
-│   ├───i686-w64-mingw32
-│   ├───info
-│   ├───lib
-│   ├───libexec
-│   ├───man
-│   └───share
-├───avrdude
-└───gnuwin32
-    ├───bin
-    ├───contrib
-    ├───doc
-    ├───dvi
-    ├───etc
-    ├───help
-    ├───html
-    ├───include
-    ├───info
-    ├───lib
-    ├───libexec
-    ├───man
-    ├───manifest
-    ├───misc
-    ├───pdf
-    ├───ps
-    ├───sbin
-    ├───share
-    ├───Start Menu
-    └───var
-```
-
-Setting up environment variables to use tools.
-Recommended to create batch file to set environment variables for development work only (since some gnuwin32 tools conflict with built-in windows ones).
-
-Example batch file
-
+Create a new file in your tools directory named `set_avr_paths.cmd`, and paste in the following:
 ```batchfile
+@ECHO OFF
+ECHO Setting AVR tool paths
 SET TOOLS_DIR=C:\AVR
 
 SET PATH=%PATH%;%TOOLS_DIR%\avr8-gnu-toolchain\bin
-SET PATH=%PATH%;%TOOLS_DIR%\avr8-gnu-toolchain\avr\bin
 SET PATH=%PATH%;%TOOLS_DIR%\avrdude
 SET PATH=%PATH%;%TOOLS_DIR%\gnuwin32\bin
-
-start cmd
 ```
+
+Create another new file in your tools directory named `avr_dev_prompt.cmd`, and paste in the following:
+
+```batchfile
+@TITLE AVR Dev Command Prompt
+@%comspec% /k " cd \ & "%~dp0set_avr_paths.cmd" "
+```
+
 
 ## Testing the AVR toolchain
 
-Run the batch file you created above to prepare a console session with tools on the PATH.  Create a new file named blink.c and paste the following program into it.  This is a pure AVR implementation of the classic Blink sketch for Arduinos.  If you load this to an Arduino it will make the built-in LED (pin 13/LED_BUILTIN) flash on and off every 500ms.
+To test that everything is working correctly, let's try building a sample program and writing it to an Arduino.  If you don't have an Arduino handy, you can either skip the `avrdude` step or adjust the program and commands to fit your scenario.
+
+In a new directory, create a new file named blink.c and paste the following program into it.  This is a AVR implementation of the classic Arduino Blink sketch.  If you load this to an Arduino it will make the built-in LED (pin 13/LED_BUILTIN) flash on and off every 500ms.
 
 ```c
 #include <avr/io.h>
@@ -327,11 +293,56 @@ int main()
 }
 ```
 
-In the directory you created the file, run the following commands.
+Double-click the `avr_dev_prompt.cmd` batch file you created above to prepare a console session with tools on the PATH. 
+
+In the directory you created the file, run the following commands. Make sure you plug in your Arduino before running avrdude and update the COM port to match the one assigned to your Arduino.
 ```
-avr-gcc blink.c -o blink.elf
+avr-gcc blink.c -o blink.elf -mmcu=atmega328 -DF_CPU=16000000UL -Os
 avr-objcopy blink.elf -O ihex blink.hex
-avrdude -c arduino -p m328 -U flash:w:"blink.hex":a
+avrdude -c arduino -p m328p -U flash:w:"blink.hex":a -P COM4
+```
+
+If everything is working you should see something like.
+```
+C:\temp\blink>avr-gcc blink.c -o blink.elf -mmcu=atmega328p -DF_CPU=16000000UL -Os
+
+C:\temp\blink>avr-objcopy blink.elf -O ihex blink.hex
+
+C:\temp\blink>avrdude -c arduino -p atmega328p -U flash:w:"blink.hex":a -P COM4
+
+avrdude: AVR device initialized and ready to accept instructions
+
+Reading | ################################################## | 100% 0.00s
+
+avrdude: Device signature = 0x1e950f (probably m328p)
+avrdude: NOTE: "flash" memory has been specified, an erase cycle will be performed
+         To disable this feature, specify the -D option.
+avrdude: erasing chip
+avrdude: reading input file "blink.hex"
+avrdude: input file blink.hex auto detected as Intel Hex
+avrdude: writing flash (176 bytes):
+
+Writing | ################################################## | 100% 0.04s
+
+avrdude: 176 bytes of flash written
+avrdude: verifying flash memory against blink.hex:
+avrdude: input file blink.hex auto detected as Intel Hex
+
+Reading | ################################################## | 100% 0.03s
+
+avrdude: 176 bytes of flash verified
+
+avrdude done.  Thank you.
 ```
 
 
+## FAQ
+
+How do I find out what COM port my Arduino is using?
+: Open **Device Manager**. Expand **Ports (COM & LPT)**. You should see an entry named something like  "Arduino Uno (COM4)".  The COM port is in parentheses.
+
+
+<!--
+## Install VS Code
+
+-->
