@@ -299,7 +299,7 @@ In the directory you created the file, run the following commands. Make sure you
 ```
 avr-gcc blink.c -o blink.elf -mmcu=atmega328 -DF_CPU=16000000UL -Os
 avr-objcopy blink.elf -O ihex blink.hex
-avrdude -c arduino -p m328p -U flash:w:"blink.hex":a -P COM4
+avrdude -c arduino -p atmega328p -U flash:w:"blink.hex":a -P COM4
 ```
 
 If everything is working you should see something like.
