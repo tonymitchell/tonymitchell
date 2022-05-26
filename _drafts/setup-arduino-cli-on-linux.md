@@ -1,18 +1,13 @@
 Using Arduino-cli...
 
-
 ## Installation
 
 ```shell
-# apt install arduino
-
-#in WSL then install usbip to access USB devices in the host
-#sudo apt install linux-tools-virtual hwdata
-#sudo update-alternatives --install /usr/local/bin/usbip usbip /usr/lib/linux-tools/*/usbip 20
+#sudo apt install arduino
 ```
 
 
-
+## Configuring board settings
 
 You can using the board details command to figure out the fully qualified board name you want...
 e.g. 

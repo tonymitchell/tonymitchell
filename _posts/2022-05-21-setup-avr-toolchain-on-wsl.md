@@ -317,7 +317,7 @@ To test the usbip setup, do the following:
     usbipd wsl list
     ```
 1. You should see your device listed.  Note the bus ID (e.g 5-7)
-1. Attach the device to WSL:
+1. Attach the device to WSL (update busid value with the value for your device):
     ```
     usbipd wsl attach --busid=5-7
     ```

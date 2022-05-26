@@ -313,8 +313,3 @@ How do I find out what port my Arduino is using?
 
 How do I run avrdude without sudo?
 : TBD - udev rule
-
-<!--
-## Install VS Code
-
--->
