@@ -38,7 +38,7 @@ tags: [tutorial, avr, avrdude, avr-gcc]
 
 ## Overview
 
-This guide will help you get your environment set up to build projects on the Atmel AVR chips (e.g. ATmega328, ATtiny85, etc.) projects on Windows using WSL-based tools.
+This guide will help you get your environment set up to build projects on the Atmel AVR chips (e.g. ATmega328, ATtiny85, etc.) projects on Windows using **WSL-based** tools.
 
 Summary:
 1. OPTION 1: The Quick & Easy Way (Recommended)
@@ -50,7 +50,7 @@ Summary:
 1. [FAQ](#faq)
 
 
-## Option 1: The Quick Way
+## Option 1: The Quick & Easy Way
 
 All the packages we need are already available in Ubuntu. Depending on your distribution release, the tools may not be the latest available.  For example, only version 6.3 of avrdude is available while versions 6.4 and 7.0 can be installed manually.  avr-gcc is better, with Ubuntu 22.04 including the latest release of 3.6.2.
 
@@ -62,86 +62,82 @@ All the packages we need are already available in Ubuntu. Depending on your dist
 We can install all the tools we need in a single command.
 
 ```bash
-sudo apt install make gcc-avr avr-libc avrdude
+$ sudo apt install make gcc-avr avr-libc avrdude
 ```
 
 Skip ahead to [Testing the AVR toolchain](#testing-the-avr-toolchain)
 
 
-## Option 2: The Latest
+## Option 2: The Latest & Manual Way
 
-
-avr-gcc manual install
-```
-Download .tar.gz
-unzip in local dir (e.g. ~/.local/)
-```
-
-<!-- 
-1. [Install VS Code](#install-vs-code) (as an IDE) [Optional]
--->
+This option will enable you to install the latest version of each of the tools, but requires manual installation. I don't recommend this approach, but if you're experiencing an issue with an older version and need the latest version you can follow some or all of these steps to install the latest version.  NOTE: If you're on a recent version of Ubuntu, avr-gcc tends to be up-to-date. It's only avrdude that doesn't include the latest version.
 
 ### Prep
 
 In this option we will manually install the latest version of the tools into your home directory under `~/.local/`.  You may need to create it if it doesn't already exist.
 
 ```bash
-mkdir ~/.local
+$ mkdir ~/.local
 ```
 
 ### Install AVR toolchain
 
 #### Download
 
-The first step is to download the AVR toolchain from the Microchip website. The toolchain can be downloaded as part of the Atmel Studio IDE or standalone.  For this guide we will use the standalone toolchain and use VS Code as the IDE.
+The first step is to download the AVR toolchain from the Microchip website. The toolchain can be downloaded as part of the Atmel Studio IDE or standalone.  For this guide we will use the standalone toolchain.
 
 1. Browse to toolchain download page at: 
 - [https://www.microchip.com/en-us/tools-resources/develop/microchip-studio/gcc-compilers](https://www.microchip.com/en-us/tools-resources/develop/microchip-studio/gcc-compilers)
 
-2. From the downloads list, find and download the appropriate toolchain for your chip and dev OS. For this guide we will download the toolchain for **AVR 8-bit** chips (like ATmega328 or ATtiny) that runs on **Windows**. At the time of writing that was [AVR 8-bit Toolchain v3.62 – Windows](https://www.microchip.com/mymicrochip/filehandler.aspx?ddocname=en607654). NOTE: You will have to sign up for a free account to complete the download
-- At the time of writing the main download page wasn't working, so alternatively you can download the prior version ([3.6.1](https://ww1.microchip.com/downloads/Secure/en/DeviceDoc/avr8-gnu-toolchain-3.6.1.1752-win32.any.x86.zip)) release from the archives at: [https://www.microchip.com/en-us/tools-resources/archives/avr-sam-mcus#AVR and Arm-Based MCU Toolchains](https://www.microchip.com/en-us/tools-resources/archives/avr-sam-mcus#AVR%20and%20Arm-Based%20MCU%20Toolchains)
+2. From the downloads list, find and download the appropriate toolchain for your chip and dev OS. For this guide we will download the toolchain for **AVR 8-bit** chips (like ATmega328 or ATtiny) that runs on **Linux 64-bit** since WSL is a 64-bit Linux. At the time of writing that was [AVR 8-bit Toolchain 3.6.2 - Linux 64-bit](https://www.microchip.com/mymicrochip/filehandler.aspx?ddocname=en607660). NOTE: You will have to sign up for a free account to complete the download
+- At the time of writing the main download page wasn't working, so alternatively you can download the prior version ([AVR 8-bit Toolchain 3.6.1 - Linux 64-bit](https://ww1.microchip.com/downloads/Secure/en/DeviceDoc/avr8-gnu-toolchain-3.6.1.1752-linux.any.x86_64.tar.gz)) release from the archives at: [https://www.microchip.com/en-us/tools-resources/archives/avr-sam-mcus#AVR and Arm-Based MCU Toolchains](https://www.microchip.com/en-us/tools-resources/archives/avr-sam-mcus#AVR%20and%20Arm-Based%20MCU%20Toolchains)
 
 3. I also recommend downloading the Release Notes for your toolchain (if any).  They should be available on the same downloads page. (e.g. [AVR 8-bit Toolchain 3.6.1 - Release Note](https://ww1.microchip.com/downloads/Secure/en/DeviceDoc/avr8-gnu-toolchain-3.6.1.1752-readme.pdf)).  The release notes can contain important installation instructions (like the fact that you may need to download chip packs)
 
 4. **[Optional]** IF the chip you are using isn't supported out-of-the-box by the main toolchain, browse to: http://packs.download.atmel.com/ to find and download the appropriate chip packs. Note: most of the popular chips should already be supported).
     - Even if you don't NEED the chip packs, there is additional documentation in them that you might find valuable to read.
     - The chip pack files end in .atpack, but are actually .zip archive files and needs to be expanded to be used.
-    - If you need to use a chip pack, you will need to reference the directory via -B and -I options when compiling. For example:  `avr-gcc -mmcu=atmega328pb -B /home/packs/Atmel.ATmega_DFP.1.0.86/gcc/dev/atmega328pb/ -I /home/packs/Atmel.ATmega_DFP.1.0.86/include/ `
+    - If you need to use a chip pack, you will need to reference the directory via -B and -I options when compiling. For example:  `avr-gcc -mmcu=atmega328pb -B ~/avr-device-packs/Atmel.ATmega_DFP.1.0.86/gcc/dev/atmega328pb/ -I ~/avr-device-packs/Atmel.ATmega_DFP.1.0.86/include/ `
 
 #### Install
 
-Unzip the downloaded toolchain archive (e.g. avr8-gnu-toolchain-3.6.1.1752-win32.any.x86.zip) into the tools folder you created earlier. You should now have a directory named avr8-gnu-toolchain-win32_x86 in your tools folder. My preference is to rename the directory to remove any platform specific names (e.g. win32_x86) to make any scripts I create platform agnostic and more portable (e.g. avr8-gnu-toolchain).
+Unzip the downloaded toolchain archive (e.g. avr8-gnu-toolchain-3.6.1.1752-linux.any.x86_64.tar.gz) in your home directory. You should now have a directory named avr8-gnu-toolchain-linux_x86_64 in your home directory. The contents of this folder need to be copied to your ~/.local/ folder.
 
-
-Tools directory so far:
+```bash
+cd
+tar xvzf avr8-gnu-toolchain-3.6.1.1752-linux.any.x86_64.tar.gz
+cp -a ~/avr8-gnu-toolchain-linux_x86_64/* ~/.local/
 ```
-C:\AVR
-└───avr8-gnu-toolchain
+
+Our additions to the home directory so far:
+```
+~/
+└───.local
     ├───avr
     ├───bin
     ├───doc
     └───...
 ```
 
-**[Optional]** If you choose to download the chi ppacks as well, I recommend unzipping those into a separate directory for chip packs with each chip pack in a separate subfolder.
+**[Optional]** If you choose to download the chi ppacks as well, I recommend unzipping those into a separate directory for chip packs (e.g. ~/avr-device-packs) with each chip pack in a separate subfolder (~/avr-device-packs/Atmel.ATmega_DFP.2.0.401/).
 
-Tools directory so far:
+Our additions to the home directory so far:
 ```
-C:\AVR
+~/
 ├───avr-device-packs
 │   ├───Atmel.ATmega_DFP.2.0.401
 │   │   ├───gcc
 │   │   ├───include
 │   │   └───...
 │   └───Atmel.ATtiny_DFP.2.0.368
-└───avr8-gnu-toolchain
+└───.local
 ```
 
 #### Test
-To test the installation of the avr-gcc toolchain, run `avr-gcc --version` in the `avr8-gnu-toolchain\bin` directory. The output should look something this:
+To test the installation of the avr-gcc toolchain, run `avr-gcc --version` in the `~/.local/bin` directory. The output should look something this:
 
 ```
-C:\AVR\avr8-gnu-toolchain\bin>avr-gcc --version
+~/.local/bin$ ./avr-gcc --version
 avr-gcc (AVR_8_bit_GNU_Toolchain_3.6.2_1778) 5.4.0
 Copyright (C) 2015 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
@@ -153,19 +149,18 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #### Download
 
 1. Browse to the AVR Dude releases directory on GitHub: https://github.com/avrdudes/avrdude/releases
-2. Download the latest version for your OS (e.g. [avrdude-v7.0-windows-x86.zip](https://github.com/avrdudes/avrdude/releases/download/v7.0/avrdude-v7.0-windows-x86.zip)).
+2. Download the latest version for your OS (e.g. [avrdude-7.0.tar.gz](https://github.com/avrdudes/avrdude/releases/download/v7.0/avrdude-7.0.tar.gz)) to your home directory.
 
-> If you're looking for older versions such as v6.4 or prior, they are can be found at their old site: http://download.savannah.gnu.org/releases/avrdude/ (e.g [avrdude-6.4-mingw32.zip](http://download.savannah.gnu.org/releases/avrdude/avrdude-6.4-mingw32.zip))
+> If you're looking for older versions such as v6.4 or prior, they are can be found at their old site: http://download.savannah.gnu.org/releases/avrdude/ (e.g [avrdude-6.4.tar.gz](http://download.savannah.gnu.org/releases/avrdude/avrdude-6.4.tar.gz))
 
 ```bash
-# Latest version 7.0+
-# Build from source https://github.com/avrdudes/avrdude/releases
-
 # Download release
 wget https://github.com/avrdudes/avrdude/releases/download/v7.0/avrdude-7.0.tar.gz
 ```
 
 #### Install
+
+This will install avrdude into your $HOME/.local structure.  You can update the configure command if you wish to install it elsewhere.
 
 ```bash
 # Expand archive
@@ -178,16 +173,14 @@ make
 make install
 ```
 
-This will install avrdude into your $HOME/.local structure.  You can update the configure command if you wish to install it elsewhere.
-
 
 #### Test
 
-To test the installation of avrdude, run `avrdude` in the `avrdude` directory. The output should look something this:
+To test the installation of avrdude, run `avrdude` in the `.local/bin` directory. The output should look something this:
 
 ```
-C:\DEV\AVR\avrdude>avrdude.exe
-Usage: avrdude.exe [options]
+~/.local/bin$ ./avrdude
+Usage: avrdude [options]
 Options:
   -p <partno>                Required. Specify AVR device.
   -b <baudrate>              Override RS-232 baud rate.
@@ -218,65 +211,6 @@ avrdude version 7.0, URL: <https://github.com/avrdudes/avrdude>
 ```
 
 
-### Install GnuWin32
-
-The [GnuWin32 project](http://gnuwin32.sourceforge.net/) provides ports of GNU tools to Windows.  For our purposes, the main tool we'll need from GnuWin32 is `make`. You can download and install just `make`, but my preferences is to download and install the full tool suite because there are lots of additional useful tools in there, and that's what we'll do in this guide.
-
-#### Download
-
-1. Browse to [https://sourceforge.net/projects/getgnuwin32/files/getgnuwin32/0.6.30/](https://sourceforge.net/projects/getgnuwin32/files/getgnuwin32/0.6.30/) and download [GetGnuWin32-0.6.3.exe](https://sourceforge.net/projects/getgnuwin32/files/getgnuwin32/0.6.30/GetGnuWin32-0.6.3.exe/download).
-    - If for some reason that link doesn't work, you can start back on the [project site](http://getgnuwin32.sourceforge.net/) and navigate to the downloads folder from there.
-2. Save that file to a temporary location such as C:\temp or your Downloads folder.
-
-#### Install
-
-1. Run the executable you downloaded (e.g GetGnuWin32-0.6.3.exe). 
-1. When presented, **Accept** the licence. 
-1. You will be presented with a summary of installation instructions which should align to the steps below.
-1. Click the **Install** button. This will create a new folder in the same location the executable was located (e.g. C:\temp)
-1. Open a Command Prompt as Administrator to ensure the next steps have permission necessary to install.
-1. Change directory to the new folder created when you ran the installer. (e.g. C:\temp\GetGnuWin32)
-    ```
-    C:\> cd \temp\GetGnuWin32
-    ```
-1. Run download.bat.  This will download all the packages necessary for gnuwin32. You will be prompted to press a key a few times before downloads start. The downloads can take a while even with a fast internet connection.
-    ```
-    C:\temp\GetGnuWin32> download.bat
-    ```
-1. If there any failed downloads, run the download.bat again until they are all successfull.
-1. Once all the packages have been downloaded successfully, run the install.bat and pass it the target directory where gnuwin32 should be installed.  If your tools directory is C:\AVR, then you would pass C:\AVR\gnuwin32 as in the example below.
-    ```
-    C:\temp\GetGnuWin32> install.bat C:\AVR\gnuwin32
-    ```
-
-1. You will be prompted about installing updated versions of several components. When prompted, just hit Enter to accept the default responses to install these updated components.  
-
-Tools directory so far:
-```
-C:\AVR
-├───avr8-gnu-toolchain
-├───avrdude
-└───gnuwin32
-    ├───bin
-    ├───contrib
-    ├───doc
-    └───... 
-```
-
-#### Test
-
-To test the installation of gnuwin32, run `make -v` in the `gnuwin32\bin` directory. The output should look something this:
-
-```
-C:\DEV\gnuwin32\bin\>make -v
-GNU Make 3.81
-Copyright (C) 2006  Free Software Foundation, Inc.
-This is free software; see the source for copying conditions.
-There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.
-
-This program built for i386-pc-mingw32
-```
 
 ### Configure PATH
 
@@ -286,30 +220,23 @@ Here is a summary of what you've done so far:
 
 |Zip|Target Location|Install|
 |-|-|-|
-|avr8-gnu-toolchain-3.6.2.1778-win32.any.x86.zip|C:\AVR\avr8-gnu-toolchain|Unzip to target|
-|avrdude-v7.0-windows-x86.zip                   |C:\AVR\avrdude|Unzip to target|
-|GetGnuWin32-0.6.3.exe                          |C:\AVR\gnuwin32|Installer, download.bat, install.bat C:\AVR\gnuwin32|
-|Chip packs (*.atpack)                          |C:\AVR\avr8-dvp|Unzip to target|
+|avr8-gnu-toolchain-3.6.2.1778-win32.any.x86.zip|~/.local/|Unzip to target|
+|avrdude-v7.0-windows-x86.zip                   |~/.local/|Build and install to target|
+|Chip packs (*.atpack)                          |~/avr-device-packs/|Unzip to target|
 
-We'll create two separate batch files -- one for setting the paths, and another for opening a command prompt with the paths set. This way if you want to just add the paths to an existing console session you can run the first, but if you want a brand new session you can run the second.
 
-Create a new file in your tools directory named `set_avr_paths.cmd`, and paste in the following:
-```batchfile
-@ECHO OFF
-ECHO Setting AVR tool paths
-SET TOOLS_DIR=C:\AVR
+In many distributions of linux, including the WSL default Ubuntu, the .local/bin directory will be added to your path automatically and we won't have to do anything else except log out and log back in.  Log out and back in, and then try running `avr-gcc --version` and `avrdude -v` to see if they're now in your path.
 
-SET PATH=%PATH%;%TOOLS_DIR%\avr8-gnu-toolchain\bin
-SET PATH=%PATH%;%TOOLS_DIR%\avrdude
-SET PATH=%PATH%;%TOOLS_DIR%\gnuwin32\bin
+If so, you're all done.  If not, edit your .profile and add that block. 
+
+Take a look at your ~/.profile and see if there is block like:
+```bash
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
 ```
 
-Create another new file in your tools directory named `avr_dev_prompt.cmd`, and paste in the following:
-
-```batchfile
-@TITLE AVR Dev Command Prompt
-@%comspec% /k " cd \ & "%~dp0set_avr_paths.cmd" "
-```
 
 
 ## Testing the AVR toolchain
@@ -335,8 +262,6 @@ int main()
     return 0;
 }
 ```
-
-Double-click the `avr_dev_prompt.cmd` batch file you created above to prepare a console session with tools on the PATH. 
 
 In the directory you created the file, run the following commands. Make sure you plug in your Arduino before running avrdude and update the COM port to match the one assigned to your Arduino.
 ```
@@ -364,22 +289,24 @@ Recent versions of Windows and WSL2 have support for accessing host USB devices 
 
 #### Install
 
-To install, follow the instructions at: 
-- https://github.com/dorssel/usbipd-win/wiki/WSL-support
-- https://devblogs.microsoft.com/commandline/connecting-usb-devices-to-wsl/
+To install, follow the instructions at (or see below for a shorter version): 
+- [https://devblogs.microsoft.com/commandline/connecting-usb-devices-to-wsl/](https://devblogs.microsoft.com/commandline/connecting-usb-devices-to-wsl/)
 
-A shortened version of those instructions is below:
+> If you run into issues, you may need to build a custom kernel for WSL which is covered in this guide. So far it hasn't been necessary for me.:
+> - [https://github.com/dorssel/usbipd-win/wiki/WSL-support](https://github.com/dorssel/usbipd-win/wiki/WSL-support)
 
-In WSL, run the following commands:
-```bash
-sudo apt install linux-tools-5.4.0-77-generic hwdata
-sudo update-alternatives --install /usr/local/bin/usbip usbip /usr/lib/linux-tools/5.4.0-77-generic/usbip 20
-```
 
-In Windows Command Prompt (as Admin), run the following command:
-```
-winget install --interactive --exact dorssel.usbipd-win
-```
+For convenience, I have summarized the steps below (see original guide for more information):
+
+1. In WSL, run the following commands:
+    ```bash
+    sudo apt install linux-tools-5.4.0-77-generic hwdata
+    sudo update-alternatives --install /usr/local/bin/usbip usbip /usr/lib/linux-tools/5.4.0-77-generic/usbip 20
+    ```
+1. In Windows Command Prompt (as Admin), run the following command:
+    ```
+    winget install --interactive --exact dorssel.usbipd-win
+    ```
 
 #### Test
 
@@ -450,7 +377,7 @@ sudo avrdude -c usbasp -p m328p -U flash:w:"blink.hex":a
 
 This approach should work in most versions of Windows.
 
-1. Install the Windows version of avrdude. See [Windows-based]({% post_url 2022-05-21-setup-avr-toolchain-on-windows %})
+1. Install the Windows version of avrdude. See "Install AVR Dude" section of [Windows-based]({% post_url 2022-05-21-setup-avr-toolchain-on-windows %}) tutorial.
 1. Ensure avrdude.exe is on the PATH.
 
 You can run avrdude from either Windows command prompt, or WSL, but if calling from WSL you need to include the full executable name including the extension -- avrdude.exe -- such as:
