@@ -16,66 +16,6 @@ Download and install VS Code from [https://code.visualstudio.com/download](https
 ## Install C/C++ extension pack
 Install [C/C++ extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack)
 
-## Project setup
-
-Before we continue let's setup a basic project consisting of a sample AVR program, blink.c, and a Makefile.
-
-Create a new directory for our project. It doesn't matter what it's named, but let's called it `blink`
-
-In the blink directory, create a new file named blink.c with the following contents:
-```c
-#include <avr/io.h>
-#include <util/delay.h>
-
-int main()
-{
-    // Set built-in LED pin as output
-    DDRB |= (1 << DDB5);
-    while (1) {
-        PORTB |=  (1 << PB5);   // LED on
-        _delay_ms(500);
-        PORTB &= ~(1 << PB5);   // LED off
-        _delay_ms(500);
-    }
-    return 0;
-}
-```
-
-Open the `blink` directory in VS code.
-```console
-~/blink$ code .
-```
-
-## Setting up a project Makefile
-You'll need a Makefile to build your program and program the chip.
-
-Rather than starting from scratch, I recommend using this [Makefile](https://github.com/hexagon5un/AVR-Programming/blob/master/setupProject/Makefile) as a starting point.  It was written by the author of the AVR Programming book, and is a good place to get started. It only requires a few edits to adjust for your chip and programmer.
-
-In your source folder, run the following commands to download the latest version of the Makefile, and make a few adjustments to it avoid errors since we're not using his full project template. 
-```bash
-# Download Makefile
-wget https://raw.githubusercontent.com/hexagon5un/AVR-Programming/master/setupProject/Makefile
-
-# Remove LIBDIR that we're not using
-sed -i -e 's/^\(LIBDIR =.\+\)/\#\1 \# Not used/' -e 's/ -I$(LIBDIR)//' Makefile
-
-# Use ATmega328p and 16MHz with arduino programmer
-sed -i -e 's/^MCU.*/MCU   = atmega328p/' -e 's/^F_CPU.*/F_CPU = 16000000UL/'
-sed -i -e 's/^PROGRAMMER_TYPE.*/PROGRAMMER_TYPE = arduino/' -e 's/^PROGRAMMER_ARGS.*/PROGRAMMER_ARGS = -P \/dev\/ttyACM0/' Makefile
-```
-
-
-
-
-Try building the project manually with make:
-```console
-$ make
-```
-
-Ensure your Arduino is plugged in.  We need to run make using sudo right now because we haven't granted the appropriate permissions to your user.
-```console
-$ sudo make flash
-```
 
 ## Edit C configuration
 
@@ -185,6 +125,20 @@ Setting up a build task using make
 }
 ```
 
+## Variations
+
+make via WSL from Windows
+```
+wsl make all
+```
+
+access to windows maked tools
+```powershell
+"Setting AVR build paths"
+$toolpath = "C:\AVR"
+$Env:PATH += ";$toolpath\avr8-gnu-toolchain\bin"
+$Env:PATH += ";$toolpath\avrdude"
+```
 
 ## Intellisense
 Setting up intellisense in VS Code

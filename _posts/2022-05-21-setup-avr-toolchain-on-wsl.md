@@ -8,19 +8,19 @@ tags: [tutorial, avr, avrdude, avr-gcc]
 > ## Tutorial Versions
 > 
 > I have written 3 different versions of this tutorial that cover the following different setups:
-> 1. [Windows-based]({% post_url 2022-05-21-setup-avr-toolchain-on-windows %})
+> 1. [Windows-based AVR toolchain]({% post_url 2022-05-21-setup-avr-toolchain-on-windows %})
 > 
 >    This options primarily uses Windows-based tools and has two variations depending on how you run make
 >    - Windows + GnuWin32
 >    - Windows + WSL
 >
-> 2. **WSL-based** (*this guide*)
+> 2. **WSL-based toolchain** (*this guide*)
 >
 >    This options primarily uses WSL-based linux tools and has two variations depending on how you program the chip -- either WSL-based avrdude using usbip to access the USB programmer or Windows-based avrdude to natively access the USB programmer
 >    - WSL + usbip
 >    - WSL + Windows
 >
-> 3. [Linux-based]({% post_url 2022-05-21-setup-avr-toolchain-on-linux %})
+> 3. [Linux-based toolchain]({% post_url 2022-05-21-setup-avr-toolchain-on-linux %})
 >
 >    This option uses all native linux-based tools on a native Linux installation.
 > 
@@ -307,6 +307,11 @@ For convenience, I have summarized the steps below (see original guide for more 
     ```
     winget install --interactive --exact dorssel.usbipd-win
     ```
+
+NOTE: After you've run it at least once as an Administrator in Windows, you can run it as a normal user in the future.  You can even run it from WSL. Notice how I've used the full filename including the extension (.exe) to tell windows we're running the windows executable):
+```
+usbipd.exe wsl attach --hardware-id=2341:0001
+```
 
 #### Test
 

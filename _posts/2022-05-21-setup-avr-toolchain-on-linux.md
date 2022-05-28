@@ -8,25 +8,21 @@ tags: [tutorial, avr, avrdude, avr-gcc]
 > ## Tutorial Versions
 > 
 > I have written 3 different versions of this tutorial that cover the following different setups:
-> 1. [Windows-based]({% post_url 2022-05-21-setup-avr-toolchain-on-windows %})
+> 1. [Windows-based AVR toolchain]({% post_url 2022-05-21-setup-avr-toolchain-on-windows %})
 > 
 >    This options primarily uses Windows-based tools and has two variations depending on how you run make
 >    - Windows + GnuWin32
 >    - Windows + WSL
 >
-> 2. [WSL-based]({% post_url 2022-05-21-setup-avr-toolchain-on-wsl %})
+> 2. [WSL-based AVR toolchain]({% post_url 2022-05-21-setup-avr-toolchain-on-wsl %})
 >
 >    This options primarily uses WSL-based linux tools and has two variations depending on how you program the chip -- either WSL-based avrdude using usbip to access the USB programmer or Windows-based avrdude to natively access the USB programmer
 >    - WSL + usbip
 >    - WSL + Windows
 >
->    See [How to setup the AVR toolchain on WSL]({% post_url 2022-05-21-setup-avr-toolchain-on-wsl %})
->
-> 3. **Linux-based** (*this guide*)
+> 3. **Linux-based AVR toolchain** (*this guide*)
 >
 >    This option uses all native linux-based tools on a native Linux installation.
-> 
->    See [How to setup the AVR toolchain on Linux]({% post_url 2022-05-21-setup-avr-toolchain-on-linux %})
 > 
 > 
 > You can see a summary of how the versions differ in the table below:
@@ -45,8 +41,8 @@ tags: [tutorial, avr, avrdude, avr-gcc]
 This guide will help you get your environment set up to build projects on the Atmel AVR chips (e.g. ATmega328, ATtiny85, etc.) projects on Windows using **Linux-based** (Ubuntu) tools.
 
 Summary:
-1. OPTION 1: The Quick & Easy Way (Recommended)
-1. OPTION 2: The Latest & Manual Way
+1. [Option 1: The Quick & Easy Way](#option-1-the-quick--easy-way) (Recommended)
+1. [Option 2: The Latest & Manual Way](#option-2-the-latest--manual-way)
     1. [Install AVR toolchain](#install-avr-toolchain) (to build the code)
     1. [Install AVR Dude](#install-avr-dude) (to flash the chip)
     1. [Configure PATH](#configure-path) (to make tools available)

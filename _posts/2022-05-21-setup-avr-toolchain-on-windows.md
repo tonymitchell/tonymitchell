@@ -8,19 +8,19 @@ tags: [tutorial, avr, avrdude, avr-gcc]
 > ## Tutorial Versions
 > 
 > I have written 3 different versions of this tutorial that cover the following different setups:
-> 1. **Windows-based** (*this guide*)
+> 1. **Windows-based AVR toolchain** (*this guide*)
 > 
 >    This options primarily uses Windows-based tools and has two variations depending on how you run make
 >    - Windows + GnuWin32
 >    - Windows + WSL
 >
-> 2. [WSL-based]({% post_url 2022-05-21-setup-avr-toolchain-on-wsl %})
+> 2. [WSL-based AVR toolchain]({% post_url 2022-05-21-setup-avr-toolchain-on-wsl %})
 >
 >    This options primarily uses WSL-based linux tools and has two variations depending on how you program the chip -- either WSL-based avrdude using usbip to access the USB programmer or Windows-based avrdude to natively access the USB programmer
 >    - WSL + usbip
 >    - WSL + Windows
 >
-> 3. [Linux-based]({% post_url 2022-05-21-setup-avr-toolchain-on-linux %})
+> 3. [Linux-based AVR toolchain]({% post_url 2022-05-21-setup-avr-toolchain-on-linux %})
 >
 >    This option uses all native linux-based tools on a native Linux installation.
 > 
