@@ -41,23 +41,20 @@ tags: [tutorial, avr, avrdude, avr-gcc]
 This guide will help you get your environment set up to build projects on the Atmel AVR chips (e.g. ATmega328, ATtiny85, etc.) projects on Windows using **Linux-based** (Ubuntu) tools.
 
 Summary:
-1. [Option 1: The Quick & Easy Way](#option-1-the-quick--easy-way) (Recommended)
-1. [Option 2: The Latest & Manual Way](#option-2-the-latest--manual-way)
-    1. [Install AVR toolchain](#install-avr-toolchain) (to build the code)
-    1. [Install AVR Dude](#install-avr-dude) (to flash the chip)
-    1. [Configure PATH](#configure-path) (to make tools available)
+1. [Install the AVR tools](#install-the-avr-tools)
 1. [Testing the AVR toolchain](#testing-the-avr-toolchain)
 1. [FAQ](#faq)
+1. [Appendix: Manually install](#appendix-manual-install)
 
 
-## Option 1: The Quick & Easy Way
+## Install the AVR tools
 
-All the packages we need are already available in Ubuntu. Depending on your distribution release, the tools may not be the latest available.  For example, only version 6.3 of avrdude is available while versions 6.4 and 7.0 can be installed manually.  avr-gcc is better, with Ubuntu 22.04 including the latest release of 3.6.2.
+All the packages we need are already available in Ubuntu. Depending on your distribution release, the tools may not be the latest, but should be fine in most cases.
 
 > |Tool|20.04 Focal (LTS)|22.04 Jammy (LTS)|
 > |-|:-:|:-:|
-> |avr-gcc|[3.6.1](# "1:5.4.0+Atmel3.6.1-2build1")  |[3.6.2](# "1:5.4.0+Atmel3.6.2-3")|
-> |avrdude|[6.3](# "6.3-20171130+svn1429-2")        |[6.3](# "6.3-20171130+svn1429-2")|
+> |avr-gcc|[3.6.1](https://packages.ubuntu.com/focal/gcc-avr "1:5.4.0+Atmel3.6.1-2build1"){:target="_blank"}  |[3.6.2](https://packages.ubuntu.com/jammy/gcc-avr "1:5.4.0+Atmel3.6.2-3"){:target="_blank"}|
+> |avrdude|[6.3](https://packages.ubuntu.com/focal/avrdude "6.3-20171130+svn1429-2"){:target="_blank"}        |[6.3](https://packages.ubuntu.com/jammy/avrdude "6.3-20171130+svn1429-2"){:target="_blank"}|
 
 We can install all the tools we need in a single command.
 
@@ -65,12 +62,130 @@ We can install all the tools we need in a single command.
 $ sudo apt install make gcc-avr avr-libc avrdude
 ```
 
-Skip ahead to [Testing the AVR toolchain](#testing-the-avr-toolchain)
+Let's run a quick check that all the tools are installed before we continue by running following commands:
+```bash
+make -v
+avr-gcc --version
+avrdude -v
+```
+
+The output should look something like this:
+```console
+$ make -v
+GNU Make 4.2.1
+Built for x86_64-pc-linux-gnu
+Copyright (C) 1988-2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+$ avr-gcc --version
+avr-gcc (GCC) 5.4.0
+Copyright (C) 2015 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+$  avrdude -v
+
+avrdude: Version 6.3-20171130
+         Copyright (c) 2000-2005 Brian Dean, http://www.bdmicro.com/
+         Copyright (c) 2007-2014 Joerg Wunsch
+
+         System wide configuration file is "/etc/avrdude.conf"
+         User configuration file is "/home/tony/.avrduderc"
+         User configuration file does not exist or is not a regular file, skipping
 
 
-## Option 2: The Latest & Manual Way
+avrdude: no programmer has been specified on the command line or the config file
+         Specify a programmer using the -c option and try again
+```
 
-This option will enable you to install the latest version of each of the tools, but requires manual installation. I don't recommend this approach, but if you're experiencing an issue with an older version and need the latest version you can follow some or all of these steps to install the latest version.  NOTE: If you're on a recent version of Ubuntu, avr-gcc tends to be up-to-date. It's only avrdude that doesn't include the latest version.
+If any of those produced an error or could not be found, you'll need to re-visit the installation steps before continuing.
+
+
+## Testing the AVR toolchain
+
+To test that everything is working correctly, let's try building a sample program and writing it to an Arduino.  If you don't have an Arduino handy, you can either skip the `avrdude` step or adjust the program and commands to fit your scenario.
+
+In a new directory, create a new file named blink.c and paste the following program into it.  This is a AVR implementation of the classic Arduino Blink sketch.  If you load this to an Arduino it will make the built-in LED (pin 13/LED_BUILTIN) flash on and off every 500ms.
+
+```c
+#include <avr/io.h>
+#include <util/delay.h>
+
+int main()
+{
+    // Set built-in LED pin as output
+    DDRB |= (1 << DDB5);
+    while (1) {
+        PORTB |=  (1 << PB5);   // LED on
+        _delay_ms(500);
+        PORTB &= ~(1 << PB5);   // LED off
+        _delay_ms(500);
+    }
+    return 0;
+}
+```
+
+In the directory you created the file, run the following commands. Make sure you plug in your Arduino before running avrdude and update the device port to match the one assigned to your Arduino.
+```
+avr-gcc blink.c -o blink.elf -mmcu=atmega328 -DF_CPU=16000000UL -Os
+avr-objcopy blink.elf -O ihex blink.hex
+avrdude -c arduino -p m328p -U flash:w:"blink.hex":a -P /dev/ttyACM0
+```
+
+If everything is working you should see something like.
+```console
+$ avr-gcc blink.c -o blink.elf -mmcu=atmega328 -DF_CPU=16000000UL -Os
+$ avr-objcopy blink.elf -O ihex blink.hex
+$ avrdude -c arduino -p m328p -U flash:w:"blink.hex":a -P /dev/ttyACM0
+
+avrdude: AVR device initialized and ready to accept instructions
+
+Reading | ################################################## | 100% 0.00s
+
+avrdude: Device signature = 0x1e950f (probably m328p)
+avrdude: NOTE: "flash" memory has been specified, an erase cycle will be performed
+             To disable this feature, specify the -D option.
+avrdude: erasing chip
+avrdude: reading input file "blink.hex"
+avrdude: input file blink.hex auto detected as Intel Hex
+avrdude: writing flash (176 bytes):
+
+Writing | ################################################## | 100% 0.04s
+
+avrdude: 176 bytes of flash written
+avrdude: verifying flash memory against blink.hex:
+avrdude: input file blink.hex auto detected as Intel Hex
+
+Reading | ################################################## | 100% 0.03s
+
+avrdude: 176 bytes of flash verified
+
+avrdude done.  Thank you.
+```
+
+
+> That's all there is to it.  To continue setting up your development environment check out my other posts on building projects with a Makefile and configuring VS Code:
+> - [Building AVR projects with make](#)
+> - [Use VS Code with the AVR toolchain](#)
+
+---
+
+## FAQ
+
+How do I find out what port my Arduino is using?
+: TBD - Easiest is dmesg / lsusb
+
+How do I run avrdude without sudo?
+: TBD - udev rule / plugdev group
+
+
+
+---
+
+## Appendix: Manual install
+
+If for some reason, the Ubuntu packaged versions don't work for you, it is possible to manually install the latest versions of the tools.  This appendix will guide you through that process. I don't recommend this approach, but if you're experiencing an issue with an older version and need the latest version you can follow some or all of these steps to install the latest version.  NOTE: If you're on a recent version of Ubuntu, avr-gcc tends to be up-to-date. It's only avrdude that doesn't include the latest version.
 
 ### Prep
 
@@ -236,76 +351,3 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 ```
-
-
-
-## Testing the AVR toolchain
-
-To test that everything is working correctly, let's try building a sample program and writing it to an Arduino.  If you don't have an Arduino handy, you can either skip the `avrdude` step or adjust the program and commands to fit your scenario.
-
-In a new directory, create a new file named blink.c and paste the following program into it.  This is a AVR implementation of the classic Arduino Blink sketch.  If you load this to an Arduino it will make the built-in LED (pin 13/LED_BUILTIN) flash on and off every 500ms.
-
-```c
-#include <avr/io.h>
-#include <util/delay.h>
-
-int main()
-{
-    // Set built-in LED pin as output
-    DDRB |= (1 << DDB5);
-    while (1) {
-        PORTB |=  (1 << PB5);   // LED on
-        _delay_ms(500);
-        PORTB &= ~(1 << PB5);   // LED off
-        _delay_ms(500);
-    }
-    return 0;
-}
-```
-
-In the directory you created the file, run the following commands. Make sure you plug in your Arduino before running avrdude and update the device port to match the one assigned to your Arduino.
-```
-avr-gcc blink.c -o blink.elf -mmcu=atmega328 -DF_CPU=16000000UL -Os
-avr-objcopy blink.elf -O ihex blink.hex
-sudo avrdude -c arduino -p m328p -U flash:w:"blink.hex":a -P /dev/ttyACM0
-```
-
-If everything is working you should see something like.
-```console
-$ avr-gcc blink.c -o blink.elf -mmcu=atmega328 -DF_CPU=16000000UL -Os
-$ avr-objcopy blink.elf -O ihex blink.hex
-$ sudo avrdude -c arduino -p m328p -U flash:w:"blink.hex":a -P /dev/ttyACM0
-
-avrdude.exe: AVR device initialized and ready to accept instructions
-
-Reading | ################################################## | 100% 0.00s
-
-avrdude.exe: Device signature = 0x1e950f (probably m328p)
-avrdude.exe: NOTE: "flash" memory has been specified, an erase cycle will be performed
-             To disable this feature, specify the -D option.
-avrdude.exe: erasing chip
-avrdude.exe: reading input file "blink.hex"
-avrdude.exe: input file blink.hex auto detected as Intel Hex
-avrdude.exe: writing flash (176 bytes):
-
-Writing | ################################################## | 100% 0.04s
-
-avrdude.exe: 176 bytes of flash written
-avrdude.exe: verifying flash memory against blink.hex:
-avrdude.exe: input file blink.hex auto detected as Intel Hex
-
-Reading | ################################################## | 100% 0.03s
-
-avrdude.exe: 176 bytes of flash verified
-
-avrdude.exe done.  Thank you.
-```
-
-
-## FAQ
-
-How do I find out what port my Arduino is using?
-: TBD - Easiest is dmesg / lsusb
-
-How do I run avrdude without sudo?
-: TBD - udev rule

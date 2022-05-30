@@ -140,13 +140,21 @@ PROGRAMMER_ARGS
 
 ## Executing the Makefile
 
-Once we have the Makefile configured appropriately, we can run it using the `make` or `make all` command.  They are equivalent for this Makefile as `all` is the first/default target defined.  This will build your project and produce an Intel hex (.hex) file that ready to be flashed to your chip.
+Once we have the Makefile configured appropriately, we can run it using the `make` or `make all` command.  Both commands are equivalent for this Makefile as `all` is the first/default target defined in the Makefile.  Running either of these commands will build your project and produce an Intel hex (.hex) file that ready to be flashed to your chip.
 
 ```console
-$ make
+$ make all
 ```
 
-You can also build and flash the project in a single command using `make flash`.  You will need to make sure that your programmer/Arduino is plugged in first. You may need to run this command with sudo if your user doesn't have the appropriate privileges to access the device.  See [Enable non-root user to program an Arduino](post_url 2022-05-21-enable-non-root-dev-board-access) to learn how to fix this.
+The next step is to flash the chip using `make flash`. When using `make flash` it isn't necessary to run `make all` first since it will automatically execute the build step if anything has changed.
+
+You will need to make sure that your Arduino (or other programmer) is connected to the computer. You may need to run this command with sudo if your user doesn't have the appropriate privileges to access the device.  See [Enable non-root user to program an Arduino](post_url 2022-05-21-enable-non-root-dev-board-access) to learn how to fix this.
 ```console
 $ make flash
 ```
+
+Another handy make target you can use is `make clean` or `make squeaky_clean` remove all the intermediate and final build output files.
+```console
+$ make squeaky_clean
+```
+
