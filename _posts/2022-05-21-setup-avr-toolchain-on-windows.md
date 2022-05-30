@@ -16,7 +16,9 @@ Summary:
 1. [Install GnuWin32](#install-gnuwin32) (for supporting build tools like Make)
 1. [Configure PATH](#configure-path) (to make tools available)
 1. [Testing the AVR toolchain](#testing-the-avr-toolchain)
-1. [FAQ](#faq)
+1. [Next Steps](#next-steps)
+1. [Troubleshooting](#troubleshooting)
+
 
 
 > ## Tutorial Versions

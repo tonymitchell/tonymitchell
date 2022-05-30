@@ -12,8 +12,10 @@ This guide will help you get your environment set up to build projects on the At
 Summary:
 1. [Install the AVR tools](#install-the-avr-tools)
 1. [Testing the AVR toolchain](#testing-the-avr-toolchain)
-1. [FAQ](#faq)
-1. [Appendix: Manually install](#appendix-manual-install)
+1. [Programming the chip](#programming-the-chip)
+1. [Next Steps](#next-steps)
+1. [Troubleshooting](#troubleshooting)
+
 
 > ## Tutorial Versions
 > 
