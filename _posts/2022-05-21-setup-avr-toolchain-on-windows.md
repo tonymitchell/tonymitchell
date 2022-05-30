@@ -5,6 +5,20 @@ categories: [Tutorial, AVR]
 tags: [tutorial, avr, avrdude, avr-gcc]
 ---
 
+## Overview
+
+This guide will help you get your environment set up to build projects on the Atmel AVR chips (e.g. ATmega328, ATtiny85, etc.) projects on Windows using Windows-based tools.
+
+Summary:
+1. [Prep](#prep)
+1. [Install AVR toolchain](#install-avr-toolchain) (to build the code)
+1. [Install AVR Dude](#install-avr-dude) (to flash the chip)
+1. [Install GnuWin32](#install-gnuwin32) (for supporting build tools like Make)
+1. [Configure PATH](#configure-path) (to make tools available)
+1. [Testing the AVR toolchain](#testing-the-avr-toolchain)
+1. [FAQ](#faq)
+
+
 > ## Tutorial Versions
 > 
 > I have written 3 different versions of this tutorial that cover the following different setups:
@@ -35,23 +49,7 @@ tags: [tutorial, avr, avrdude, avr-gcc]
 > |WSL+Windows|WSL|WSL|windows|-|
 > |Linux|linux|linux|linux|-|
 > 
-
-## Overview
-
-This guide will help you get your environment set up to build projects on the Atmel AVR chips (e.g. ATmega328, ATtiny85, etc.) projects on Windows using Windows-based tools.
-
-Summary:
-1. [Prep](#prep)
-1. [Install AVR toolchain](#install-avr-toolchain) (to build the code)
-1. [Install AVR Dude](#install-avr-dude) (to flash the chip)
-1. [Install GnuWin32](#install-gnuwin32) (for supporting build tools like Make)
-1. [Configure PATH](#configure-path) (to make tools available)
-1. [Testing the AVR toolchain](#testing-the-avr-toolchain)
-1. [FAQ](#faq)
-
-<!-- 
-1. [Install VS Code](#install-vs-code) (as an IDE) [Optional]
--->
+{: .prompt-info }
 
 ## Prep
 
@@ -292,6 +290,7 @@ int main()
     return 0;
 }
 ```
+{: file="blink.c" }
 
 Double-click the `avr_dev_prompt.cmd` batch file you created above to prepare a console session with tools on the PATH. 
 
@@ -335,14 +334,13 @@ avrdude: 176 bytes of flash verified
 avrdude done.  Thank you.
 ```
 
+## Next Steps
 
-## FAQ
+That's all there is to it.  To continue setting up your development environment check out my other posts on building projects with a Makefile and configuring VS Code:
+- [Building AVR projects with make](#)
+- [Use VS Code with the AVR toolchain](#)
+
+## Troubleshooting
 
 How do I find out what COM port my Arduino is using?
 : Open **Device Manager**. Expand **Ports (COM & LPT)**. You should see an entry named something like  "Arduino Uno (COM4)".  The COM port is in parentheses.
-
-
-<!--
-## Install VS Code
-
--->

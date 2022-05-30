@@ -5,25 +5,28 @@ categories: [Tutorial, AVR]
 tags: [tutorial, avr, tips, permissions, udev]
 ---
 
+## #1. Fixing device permissions
 
-## Tip #1. Fixing device permissions
+Since systemd is not running under WSL2 some of the UDEV rules won't run that set the groups, etc.  As a result the devices under /dev/ will all be owned by root still.
 
-NOTE: Since systemd is not running under WSL2 some of the UDEV rules won't run that set the groups, etc.  As a result the devices under /dev/ will all be owned by root still.
+```console
+$ ls -al /dev/ttyACM*
+crw-rw---- 1 root root 166, 0 May 29 23:14 /dev/ttyACM0
+```
 
 As a temporary fix...
 Run `sudo system udev restart` BEFORE plugging in the device (or attaching to WSL).  This will ensure that UDEV can make the necessary adjustments. (change the group owner to `plugdev`)
 
+After the fix.
+```console
+$ ls -al /dev/ttyACM*
+crw-rw---- 1 root plugdev 166, 0 May 29 23:14 /dev/ttyACM0
+```
+
+
 Also make sure your user is a member of `plugdev`.  Run `groups` to check
 
-<!--
-https://mightyohm.com/blog/2010/03/run-avrdude-without-root-privs-in-ubuntu/
-https://hackaday.com/2009/09/18/how-to-write-udev-rules/
-https://enotty.pipebreaker.pl/2012/05/23/linux-automatic-user-acl-management/
-https://webcache.googleusercontent.com/search?q=cache:Y4cgazdd5i8J:https://blog.luben.se/2021/12/18/wsl-serials.html+&cd=4&hl=en&ct=clnk&gl=ca
--->
-
-
-https://unix.stackexchange.com/questions/39370/how-to-reload-udev-rules-without-reboot
+### Making it automatic
 
 Add this to ~/.bashrc
 ```bash
@@ -35,8 +38,23 @@ added in sudo visudo to allow .bashrc (or well anyone) to actually do it.).
 %sudo ALL=NOPASSWD: /usr/sbin/service udev restart 
 ```
 
+<!--
+https://mightyohm.com/blog/2010/03/run-avrdude-without-root-privs-in-ubuntu/
+https://hackaday.com/2009/09/18/how-to-write-udev-rules/
+https://enotty.pipebreaker.pl/2012/05/23/linux-automatic-user-acl-management/
+https://webcache.googleusercontent.com/search?q=cache:Y4cgazdd5i8J:https://blog.luben.se/2021/12/18/wsl-serials.html+&cd=4&hl=en&ct=clnk&gl=ca
+-->
+
+
+<!--
+
+https://unix.stackexchange.com/questions/39370/how-to-reload-udev-rules-without-reboot
+
 Can we do `udevadm trigger --attr-match=subsystem=net` type call instead?
 
+-->
+
+## #2. Force udev to fix permissions without unplugging the device
 
 This seems to be enough get the ACLs set...
 
@@ -57,6 +75,7 @@ usbipd.exe wsl detach --hardware-id=2341:0001
 usbipd.exe wsl attach --hardware-id=2341:0001
 ```
 
+## #3. Smart device attachment
 
 Attach if not already attached
 ```console
@@ -96,9 +115,9 @@ $ (usbipd.exe wsl list | grep -q " 2341:0001 " || (echo "Device not found"; fals
 > ```
 
 
-## WSL Make enhancements
+## #4. WSL Make enhancements
 
-Some text
+We can build the smart device attachment into a Makefile target and call it from your flash target automatically.  Now you don't have to worry about usbip at all.
 
 ```makefile
 #

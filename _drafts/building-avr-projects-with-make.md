@@ -35,6 +35,7 @@ Before we get into the Makefile, let's setup a basic project consisting of a sam
         return 0;
     }
     ```
+    {: file="blink.c" }
 
 ## Building it manually
 
