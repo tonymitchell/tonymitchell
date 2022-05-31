@@ -7,28 +7,65 @@ tags: [tutorial, avr, vscode]
 
 ## Overview
 
-## Setup AVR toolchain
-See [How to setup the AVR toolchain on Windows]({% post_url 2022-05-21-setup-avr-toolchain-on-windows %})
+## Prerequisites
 
-## Install VS Code
-Download and install VS Code from [https://code.visualstudio.com/download](https://code.visualstudio.com/download)
+### Setup AVR toolchain
 
-## Install C/C++ extension pack
+If you haven't already done so, start by setting up the AVR tool chain on your system so you can build AVR projects.
+
+Follow the appropriate guide for your platform:
+- [Windows-based AVR toolchain]({% post_url 2022-05-21-setup-avr-toolchain-on-windows %})
+- [WSL-based AVR toolchain]({% post_url 2022-05-21-setup-avr-toolchain-on-wsl %})
+- [Linux-based toolchain]({% post_url 2022-05-21-setup-avr-toolchain-on-linux %})
+
+### Install Visual Studio Code
+Download and install Visual Studio Code from [https://code.visualstudio.com/download](https://code.visualstudio.com/download)
+
+### Install C/C++ extension pack
 Install [C/C++ extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack)
+
+### Review Visual Studio Code C/C++ documentation
+If you're not familiar with using VS Code with C/C++ on your chosen platform (Windows, WSL, Linux) I encourage you read through the VS Code documentation first before continuing.
+
+Basic configuration
+- [Using C++ on Linux in VS Code](https://code.visualstudio.com/docs/cpp/config-linux)
+- [Using C++ and WSL in VS Code](https://code.visualstudio.com/docs/cpp/config-wsl)
+- [Using GCC with MinGW](https://code.visualstudio.com/docs/cpp/config-mingw)
+
+Cross-compiling (which is what we're doing with AVR)
+- [IntelliSense for cross-compiling](https://code.visualstudio.com/docs/cpp/configure-intellisense-crosscompilation)
 
 
 ## Edit C configuration
 
-Ctrl + Shift + P
+Open the Command Palette (`Ctrl+Shift+P`)
+
 Search for and run "C/C++: Edit Configurations (JSON)".
 This will create a new c_cpp_properties.json file in .vscode/ directory in your project directory and open it for editing.
 
-Make the following changes:
-- Add the path to the avr/include directory from the AVR toolchain. (We installed this earlier during setup -- avr-libc in linux)
+
+
+You will need to make the following general changes (see platform specific settings below):
+- includePath: Add the path to the avr/include directory from the AVR toolchain.
+- compilerPath: Update to avr-gcc (see platform specific settings below)
+- intelliSenseMode: Update to {os}-gcc-{arch} ("windows-gcc-x64" or "linux-gcc-x64" most likely)
+- compilerArgs: Add compiler arguments for mcu, F_CPU define, and optimization (-Os)
+
+
+WSL / Linux settings:
+- Include path: We installed this earlier during setup -- avr-libc in linux
+    - e.g. /usr/lib/avr/include/
     - You can find the path with `dpkg -L avr-libc | grep avr/io.h`
-- Update the compilerPath to avr-gcc
+- Change  "intelliSenseMode" to "linux-gcc-x64"
+- Update the compilerPath to "/usr/bin/avr-gcc"
+
+Windows settings:
+- Include path: This is under the avr8-gnu-toolchain directory we created in the install
+    - e.g. C:\AVR\avr8-gnu-toolchain\avr\include\
 - Change  "intelliSenseMode" to "windows-gcc-x64"
-- Add compilerArgs for mcu, F_CPU define, and optimization (-Os)
+- Update the compilerPath to avr-gcc.exe 
+    - e.g. C:\AVR\avr8-gnu-toolchain\bin\avr-gcc.exe
+
 
 Linux:
 ```json
