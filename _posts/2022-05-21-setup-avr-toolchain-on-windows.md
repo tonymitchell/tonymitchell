@@ -339,8 +339,8 @@ avrdude done.  Thank you.
 ## Next Steps
 
 That's all there is to it.  To continue setting up your development environment check out my other posts on building projects with a Makefile and configuring VS Code:
-- [Building AVR projects with make](#)
-- [Use VS Code with the AVR toolchain](#)
+- [Building AVR projects with make]({% post_url 2022-05-22-building-avr-projects-with-make %})
+- [Use VS Code with the AVR toolchain]({% post_url 2022-05-22-use-vscode-with-avr-toolchain %})
 
 ## Troubleshooting
 

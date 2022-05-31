@@ -147,11 +147,13 @@ $ avr-objcopy blink.elf -O ihex blink.hex
 
 At the time of writing WSL2 cannot *directly* interact with serial devices such as Arduinos or USB programmers. 
 
-There are two workarounds:
-1. Use USB/IP to capture and expose the device in WSL.
-1. Use a Windows version of avrdude to program the chip since it can directly access the device.
+I've documented two workarounds:
+- [Option 1: Using USB/IP](#option-1-using-usbip) - Use USB/IP to capture and expose the device in WSL.
+- [Option 2: Using avrdude.exe (Windows-based)](#option-2-using-avrdudeexe-windows-based) - Use a Windows version of avrdude to program the chip since it can directly access the device.
 
-### Using USB/IP
+These choices don't conflict with each other so you can always do both and see which you prefer.
+
+### Option 1: Using USB/IP
 
 Recent versions of Windows and WSL2 have support for accessing host USB devices using [usbipd-win](https://github.com/dorssel/usbipd-win). 
 
@@ -244,22 +246,19 @@ Then in WSL run avrdude against that device. Notice we don't have to specify a p
 sudo avrdude -c usbasp -p m328p -U flash:w:"blink.hex":a
 ```
 
-> **A note re: avrdude and sudo**
+Unless you're planning on using both options, you can skip ahead to [Next Steps](#next-steps).
+
+
+> **Why do I need to use sudo with avrdude?**
 >
 > Normally in Ubuntu linux, when you plug in a device it run udev rules that setup the necessary device paths and the appropriate permissions.  Unfortunately in WSL2 that doesn't work fully because systemd isn't running. There are some workarounds that you can use to get this mostly working and you can read more about that in my other post, [WSL AVR tips and tricks]({% post_url 2022-05-20-wsl-avr-tips-and-tricks %}).  Otherwise, you will need to run avrdude as root via sudo to gain access to the device.
 {: .prompt-warning }
 
 
-> That's all there is to it.  To continue setting up your development environment check out my other posts on building projects with a Makefile and configuring VS Code:
-> [Building AVR projects with make](#)
-> [Use VS Code with the AVR toolchain](#)
-
-
-
 ---
 
 
-### Using avrdude.exe (Windows-based)
+### Option 2: Using avrdude.exe (Windows-based)
 
 This approach should work in most versions of Windows.
 
@@ -303,8 +302,8 @@ NOTE: Since you are calling the Windows version you should use the Windows metho
 ## Next Steps
 
 That's all there is to it.  To continue setting up your development environment check out my other posts on building projects with a Makefile and configuring VS Code:
-- [Building AVR projects with make](#)
-- [Use VS Code with the AVR toolchain](#)
+- [Building AVR projects with make]({% post_url 2022-05-22-building-avr-projects-with-make %})
+- [Use VS Code with the AVR toolchain]({% post_url 2022-05-22-use-vscode-with-avr-toolchain %})
 
 ## Troubleshooting
 
