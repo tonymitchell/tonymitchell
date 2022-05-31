@@ -251,7 +251,7 @@ Unless you're planning on using both options, you can skip ahead to [Next Steps]
 
 > **Why do I need to use sudo with avrdude?**
 >
-> Normally in Ubuntu linux, when you plug in a device it run udev rules that setup the necessary device paths and the appropriate permissions.  Unfortunately in WSL2 that doesn't work fully because systemd isn't running. There are some workarounds that you can use to get this mostly working and you can read more about that in my other post, [WSL AVR tips and tricks]({% post_url 2022-05-20-wsl-avr-tips-and-tricks %}).  Otherwise, you will need to run avrdude as root via sudo to gain access to the device.
+> Normally in Ubuntu linux, when you plug in a device it run udev rules that setup the necessary device paths and the appropriate permissions.  Unfortunately in WSL2 that doesn't work fully because systemd isn't running. There are some workarounds that you can use to get this mostly working and you can read more about that in my other post, [Programming AVR in WSL Tips and Tricks]({% post_url 2022-05-20-programming-avr-in-wsl-tips-and-tricks %}).  Otherwise, you will need to run avrdude as root via sudo to gain access to the device.
 {: .prompt-warning }
 
 

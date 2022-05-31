@@ -149,7 +149,7 @@ $ make all
 
 The next step is to flash the chip using `make flash`. When using `make flash` it isn't necessary to run `make all` first since it will automatically execute the build step if anything has changed.
 
-You will need to make sure that your Arduino (or other programmer) is connected to the computer. You may need to run this command with sudo if your user doesn't have the appropriate privileges to access the device.  See [Enable non-root user to program an Arduino](post_url 2022-05-21-enable-non-root-dev-board-access) to learn how to fix this.
+You will need to make sure that your Arduino (or other programmer) is connected to the computer. You may need to run this command with sudo if your user doesn't have the appropriate privileges to access the device.  See [Programming AVR in WSL Tips and Tricks]({% post_url 2022-05-20-programming-avr-in-wsl-tips-and-tricks %}) to learn how to fix this.
 ```console
 $ make flash
 ```
