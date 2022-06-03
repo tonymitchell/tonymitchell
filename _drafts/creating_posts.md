@@ -2,43 +2,22 @@
 title: Creating Posts
 ---
 
-Reference links:
+## Getting ready to write
 
-USB/IP
-https://github.com/dorssel/usbipd-win/wiki/WSL-support
-https://devblogs.microsoft.com/commandline/connecting-usb-devices-to-wsl/
-https://www.kernel.org/doc/html/latest/usb/usbip_protocol.html
-USB Device lookup: https://devicehunt.com/view/type/usb/vendor/2341/device/0001
-https://gitlab.com/alelec/wsl-usb-gui
+- Check out source in WSL / Linux
+    ```console
+    git clone git@github.com:tonymitchell/tonymitchell.git
+    ```
+- Open root folder in VS Code
+    ```console
+    code .
+    ```
+- Run `bundle exec jekyll serve  -l --drafts` to run a local server w/LiveReload (-l) and drafts visible
+    ```console
+    bundle exec jekyll serve  -l --drafts
+    ```
 
-VS Code:
-https://code.visualstudio.com/docs/editor/tasks
-
-
-Jekyll / Chirpy:
-Chirpy Theme: https://github.com/cotes2020/jekyll-theme-chirpy
-Static Assets: https://github.com/cotes2020/chirpy-static-assets
-
-https://jekyllrb.com/docs/step-by-step/01-setup/
-https://jekyllrb.com/docs/posts/
-https://chirpy.cotes.page/posts/getting-started/
-
-https://mademistakes.com/mastering-jekyll/how-to-link/
-
-
-Running a local server: 
-- https://chirpy.cotes.page/posts/getting-started/#running-local-server
-- https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/testing-your-github-pages-site-locally-with-jekyll
-
-```console
-$ bundle exec jekyll serve
-```
-Include drafts:
-```console
-$ bundle exec jekyll serve --drafts
-```
-
-
+## Markdown Syntax references
 
 Markdown:
 https://www.markdownguide.org/cheat-sheet/
@@ -50,10 +29,43 @@ Jekyll diagrams:
 https://github.com/zhustec/jekyll-diagrams
 
 
+
+## Jekyll / Chirpy references
+
+Chirpy Theme: https://github.com/cotes2020/jekyll-theme-chirpy
+Static Assets: https://github.com/cotes2020/chirpy-static-assets
+
+https://jekyllrb.com/docs/step-by-step/01-setup/
+https://jekyllrb.com/docs/posts/
+https://chirpy.cotes.page/posts/getting-started/
+
+https://mademistakes.com/mastering-jekyll/how-to-link/
+
+Running a local server: 
+- https://chirpy.cotes.page/posts/getting-started/#running-local-server
+- https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/testing-your-github-pages-site-locally-with-jekyll
+
 Future:
 https://docs.github.com/en/get-started/using-git/splitting-a-subfolder-out-into-a-new-repository
 https://jekyll.github.io/github-metadata/site.github/
 
+
+
+
+
+
+
+## AVR Reference links:
+
+USB/IP
+https://github.com/dorssel/usbipd-win/wiki/WSL-support
+https://devblogs.microsoft.com/commandline/connecting-usb-devices-to-wsl/
+https://www.kernel.org/doc/html/latest/usb/usbip_protocol.html
+USB Device lookup: https://devicehunt.com/view/type/usb/vendor/2341/device/0001
+https://gitlab.com/alelec/wsl-usb-gui
+
+VS Code:
+https://code.visualstudio.com/docs/editor/tasks
 
 
 http://jaseemjas.blogspot.com/2013/05/avrdude-with-usbasp-programmer.html
