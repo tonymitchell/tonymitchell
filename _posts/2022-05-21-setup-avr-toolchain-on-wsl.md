@@ -130,6 +130,7 @@ int main()
     return 0;
 }
 ```
+{: file="blink.c" }
 
 In the directory you created the file, run the following commands. Make sure you plug in your Arduino before running avrdude and update the COM port to match the one assigned to your Arduino.
 ```
