@@ -41,7 +41,7 @@ social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
   name: Tony Mitchell
-  email: me@tonymitchell.ca             # change to your email address
+  #email: tony.mitchell@live.ca             # change to your email address
   links:
     # The first element serves as the copyright owner's link
     - https://twitter.com/tony_a_mitchell      # change to your twitter homepage
