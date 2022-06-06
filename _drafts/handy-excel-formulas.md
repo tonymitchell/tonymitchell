@@ -34,3 +34,4 @@ Select the list of values
 On the ribbon bar, select Formulas > Defined Names (section) > Define Name
 
 ![New Name](/assets/img/2022-06-05-17-59-16.png)
+
