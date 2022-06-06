@@ -1,11 +1,9 @@
 ---
-title: WSL Tips & Tricks
+title: Apply updates to multiple WSL Linux environments quickly
 categories: [Tips & Tricks, WSL]
 tags: [wsl,apt]
 date: 2022-06-05 12:00:00 +0700
 ---
-
-## Quickly apply updates to multiple WSL Linux environments
 
 You can update your default WSL environment with this command (assuming it uses the APT packaging system ):
 

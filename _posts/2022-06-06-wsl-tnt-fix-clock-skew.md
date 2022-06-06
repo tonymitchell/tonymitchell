@@ -1,11 +1,9 @@
 ---
-title: WSL Tips & Tricks
+title: Fix WSL2 clock skew issues
 categories: [Tips & Tricks, WSL]
 tags: [wsl,workaround,clockskew]
 date: 2022-06-06 12:00:00 +0700
 ---
-
-## Fix WSL2 clock skew issues
 
 If you're using WSL2 on a laptop, there are [known](https://github.com/microsoft/WSL/issues/5324) [issues](https://github.com/microsoft/WSL/issues/8204) with clock skew that can happen when your laptop hibernates.  This can result in your WSL time and your Windows time getting out of sync and causes all kinds of issues inside Linux.
 
