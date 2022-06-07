@@ -1,6 +1,6 @@
 ---
 title: Building AVR projects with make
-date: 2022-05-21 11:00:00 +0700
+date: 2022-05-21 11:00:00 -0700
 categories: [Tutorial, AVR]
 tags: [tutorial, avr, make]
 ---
