@@ -1,4 +1,4 @@
-name: 'Automatic build'
+name: "Build and Deploy"
 on:
   push:
     branches:
@@ -28,9 +28,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # for posts's lastmod
+          fetch-depth: 0
           # submodules: true
           # If using the 'assets' git submodule from Chirpy Starter, uncomment above
           # (See: https://github.com/cotes2020/chirpy-starter/tree/main/assets)
@@ -69,4 +69,5 @@ jobs:
     needs: build
     steps:
       - name: Deploy to GitHub Pages
-        run: bash tools/deploy.sh
+        id: deployment
+        uses: actions/deploy-pages@v4
