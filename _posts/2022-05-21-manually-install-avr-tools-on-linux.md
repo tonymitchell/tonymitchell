@@ -91,7 +91,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 1. Browse to the AVR Dude releases directory on GitHub: https://github.com/avrdudes/avrdude/releases
 2. Download the latest version for your OS (e.g. [avrdude-7.0.tar.gz](https://github.com/avrdudes/avrdude/releases/download/v7.0/avrdude-7.0.tar.gz)) to your home directory.
 
-> If you're looking for older versions such as v6.4 or prior, they are can be found at their old site: http://download.savannah.gnu.org/releases/avrdude/ (e.g [avrdude-6.4.tar.gz](http://download.savannah.gnu.org/releases/avrdude/avrdude-6.4.tar.gz))
+> If you're looking for older versions such as v6.4 or prior, they are can be found at their old site: https://download.savannah.gnu.org/releases/avrdude/ (e.g [avrdude-6.4.tar.gz](https://download.savannah.gnu.org/releases/avrdude/avrdude-6.4.tar.gz))
 
 ```bash
 # Download release

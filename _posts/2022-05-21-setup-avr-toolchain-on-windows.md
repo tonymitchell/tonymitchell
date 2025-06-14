@@ -123,7 +123,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 1. Browse to the AVR Dude releases directory on GitHub: https://github.com/avrdudes/avrdude/releases
 2. Download the latest version for your OS (e.g. [avrdude-v7.0-windows-x86.zip](https://github.com/avrdudes/avrdude/releases/download/v7.0/avrdude-v7.0-windows-x86.zip)).
 
-> If you're looking for older versions such as v6.4 or prior, they are can be found at their old site: http://download.savannah.gnu.org/releases/avrdude/ (e.g [avrdude-6.4-mingw32.zip](http://download.savannah.gnu.org/releases/avrdude/avrdude-6.4-mingw32.zip))
+> If you're looking for older versions such as v6.4 or prior, they are can be found at their old site: https://download.savannah.gnu.org/releases/avrdude/ (e.g [avrdude-6.4-mingw32.zip](https://download.savannah.gnu.org/releases/avrdude/avrdude-6.4-mingw32.zip))
 
 ### Install
 
@@ -177,12 +177,12 @@ avrdude version 7.0, URL: <https://github.com/avrdudes/avrdude>
 
 ## Install GnuWin32
 
-The [GnuWin32 project](http://gnuwin32.sourceforge.net/) provides ports of GNU tools to Windows.  For our purposes, the main tool we'll need from GnuWin32 is `make`. You can download and install just `make`, but my preferences is to download and install the full tool suite because there are lots of additional useful tools in there, and that's what we'll do in this guide.
+The [GnuWin32 project](https://gnuwin32.sourceforge.net/) provides ports of GNU tools to Windows.  For our purposes, the main tool we'll need from GnuWin32 is `make`. You can download and install just `make`, but my preferences is to download and install the full tool suite because there are lots of additional useful tools in there, and that's what we'll do in this guide.
 
 ### Download
 
 1. Browse to [https://sourceforge.net/projects/getgnuwin32/files/getgnuwin32/0.6.30/](https://sourceforge.net/projects/getgnuwin32/files/getgnuwin32/0.6.30/) and download [GetGnuWin32-0.6.3.exe](https://sourceforge.net/projects/getgnuwin32/files/getgnuwin32/0.6.30/GetGnuWin32-0.6.3.exe/download).
-    - If for some reason that link doesn't work, you can start back on the [project site](http://getgnuwin32.sourceforge.net/) and navigate to the downloads folder from there.
+    - If for some reason that link doesn't work, you can start back on the [project site](https://getgnuwin32.sourceforge.net/) and navigate to the downloads folder from there.
 2. Save that file to a temporary location such as C:\temp or your Downloads folder.
 
 ### Install
